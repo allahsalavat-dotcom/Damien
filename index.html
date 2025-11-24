@@ -1,16 +1,118 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Damien/title>
-    <style>
-        body { font-family: Arial; text-align: center; padding: 50px; background: #f4f4f4; }
-        h1 { color: #333; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ezan Vakitleri & Günün Ayeti</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+    body {
+      margin:0; padding:0; min-height:100vh;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color:#fff; font-family:'Amiri', serif;
+      display:flex; flex-direction:column; align-items:center;
+    }
+    h1 { margin:30px 0 10px; font-size:2.8rem; text-align:center; }
+    .container { background:rgba(0,0,0,0.4); padding:25px; border-radius:15px; width:90%; max-width:420px; text-align:center; }
+    .vakit { font-size:1.5rem; margin:12px 0; }
+    .vakit span { font-weight:bold; color:#ffd700; }
+    #ayet { margin-top:30px; font-size:1.4rem; line-height:1.8; }
+    footer { margin-top:auto; padding:20px; font-size:0.9rem; opacity:0.8; }
+    .loader { font-size:1.5rem; margin:50px; }
+  </style>
 </head>
 <body>
-    <h1>Merhaba, ben Damien!</h1>
-    <p>Bu site GitHub Pages ile yapıldı.</p>
+
+  <h1>إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَوْقُوتًا</h1>
+  <p>“Namaz, mü’minler üzerine vakitleri belirlenmiş olarak farz kılındı.” (Nisa 103)</p>
+
+  <div class="container">
+    <div class="loader" id="loader">Ezan vakitleri yükleniyor...</div>
+    
+    <div id="vakitler" style="display:none;">
+      <div class="vakit">İmsak : <span id="imsak">-</span></div>
+      <div class="vakit">Güneş : <span id="gunes">-</span></div>
+      <div class="vakit">Öğle  : <span id="ogle">-</span></div>
+      <div class="vakit">İkindi: <span id="ikindi">-</span></div>
+      <div class="vakit">Akşam : <span id="aksam">-</span></div>
+      <div class="vakit">Yatsı : <span id="yatsi">-</span></div>
+      <p style="margin-top:20px; font-size:1.1rem;" id="konum">Konum algılanıyor...</p>
+    </div>
+
+    <div id="ayet"></div>
+  </div>
+
+  <footer>Allahsalavat.com ❤️</footer>
+
+  <script>
+    // 1) Konum al
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(gosterVakit, hata);
+    } else {
+      document.getElementById("loader").innerHTML = "Tarayıcınız konum desteklemiyor.";
+    }
+
+    function hata() {
+      document.getElementById("loader").innerHTML = "Konum alınamadı. Varsayılan: Türkiye geneli";
+      vakitleriGetir(39.9334, 32.8597, "Türkiye");
+    }
+
+    async function gosterVakit(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const sehir = await konumaGoreSehir(lat, lon);
+      vakitleriGetir(lat, lon, sehir || "Bilinmeyen Konum");
+    }
+
+    async function vakitleriGetir(lat, lon, sehirAdi) {
+      const bugun = new Date().toISOString().slice(0,10);
+      const url = `https://api.aladhan.com/v1/timings/${bugun}?latitude=${lat}&longitude=${lon}&method=13`;
+      
+      try {
+        const res = await fetch(url);
+        const veri = await res.json();
+        const t = veri.data.timings;
+
+        document.getElementById("imsak").textContent  = t.Imsak;
+        document.getElementById("gunes").textContent  = t.Sunrise;
+        document.getElementById("ogle").textContent   = t.Dhuhr;
+        document.getElementById("ikindi").textContent = t.Asr;
+        document.getElementById("aksam").textContent  = t.Maghrib;
+        document.getElementById("yatsi").textContent  = t.Isha;
+
+        document.getElementById("konum").textContent = sehirAdi;
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("vakitler").style.display = "block";
+
+        gununAyetiniGetir();
+      } catch(e) {
+        document.getElementById("loader").innerHTML = "Bir hata oluştu, lütfen sayfayı yenileyin.";
+      }
+    }
+
+    // Basit şehir bulucu (yaklaşık)
+    async function konumaGoreSehir(lat, lon) {
+      try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10`);
+        const data = await res.json();
+        return data.address.city || data.address.town || data.address.state || "Bilinmeyen Konum";
+      } catch { return "Türkiye"; }
+    }
+
+    // Günün rastgele ayeti
+    const ayetler = [
+      "“Rabbinizden size indirilene uyun…” (A’râf 3)",
+      "“Kim Allah’a ve Peygamber’e itaat ederse, işte onlar Allah’ın nimet verdiği kimselerle beraberdir.” (Nisâ 69)",
+      "“Şüphesiz Allah, adaleti, iyilik yapmayı ve akrabaya yardım etmeyi emreder…” (Nahl 90)",
+      "“Sabredenlere mükâfatları hesapsız ödenecektir.” (Zümer 10)",
+      "“Kim Allah’tan korkarsa, Allah ona bir çıkış yolu ihsan eder.” (Talâk 2)",
+      "“Namazını dosdoğru kıl. Çünkü namaz, insanı hayâsızlıktan ve kötülükten alıkor.” (Ankebût 45)"
+    ];
+
+    function gununAyetiniGetir() {
+      const rastgele = ayetler[Math.floor(Math.random() * ayetler.length)];
+      document.getElementById("ayet").innerHTML = `<strong>Günün Ayeti:</strong><br>${rastgele}`;
+    }
+  </script>
 </body>
 </html>
