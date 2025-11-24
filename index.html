@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Damien</title>
+    <meta name="description" content="Damien - Kişisel Web Sitesi"/>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #0f0f0f;
+            --text: #f0f0f0;
+            --accent: #00ff99;
+            --card: #1a1a1a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            color: #aaa;
+            margin-bottom: 2rem;
+        }
+        
+        .social-links a {
+            color: var(--text);
+            font-size: 1.8rem;
+            margin: 0 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent);
+            transform: translateY(-5px);
+        }
+        
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--accent);
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-15px); }
+            60% { transform: translateX(-50%) translateY(-10px); }
+        }
+        
+        section {
+            padding: 100px 0;
+        }
+        
+        .about {
+            background-color: var(--card);
+            border-radius: 20px;
+            padding: 60px;
+            margin: 40px 0;
+        }
+        
+        .about h2 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            color: var(--accent);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 50px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3.5rem; }
+            .hero p { font-size: 1.2rem; }
+            .about { padding: 40px 20px; }
+        }
+    </style>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="hero">
+                <h1>Damien</h1>
+                <p>Yazılım Geliştirici & Tasarımcı</p>
+                <div class="social-links">
+                    <a href="https://github.com/kullaniciadi" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://twitter.com/kullaniciadi" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://linkedin.com/in/kullaniciadi" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="mailto:damien@example.com"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+            <div class="scroll-down">↓</div>
+        </div>
+    </header>
+
+    <section class="about">
+        <div class="container">
+            <h2>Hakkımda</h2>
+            <p>
+                Merhaba! Ben Damien. Tutkulu bir yazılım geliştirici ve yaratıcı projeler üzerinde çalışmayı seven biriyim. 
+                Modern web teknolojileri, açık kaynak projeler ve temiz kod yazmak benim işim. 
+                Yeni teknolojileri öğrenmeyi ve topluluğa katkı sağlamayı seviyorum.
+            </p>
+            <br/>
+            <p>
+                Şu anda JavaScript, React, Node.js, Python ve Go ile projeler geliştiriyorum. 
+                Boş zamanlarımda açık kaynak kodlara katkıda bulunuyor ve blog yazıyorum.
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Damien. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+</body>
+</html>
